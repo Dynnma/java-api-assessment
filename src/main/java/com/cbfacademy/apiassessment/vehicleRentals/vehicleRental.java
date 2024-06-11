@@ -1,6 +1,7 @@
 package com.cbfacademy.apiassessment.vehicleRentals;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
@@ -14,39 +15,37 @@ import jakarta.persistence.Table;
 
 public class vehicleRental {
     
-    private static Object vehicleType;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     private String renter;
+    private String vehicleSupplier;
     private String plateNumber;
-    private String VehicleType;
+    private String vehicleType;
     private int rentalPrice;
-    private Instant dateTime;
+    private LocalDateTime reservationStartDateTime;
+    private LocalDateTime reservationEndDateTime;
+
 
     public vehicleRental() {
-        this(null, null, VehicleType, rentalPrice, Instant.now());
+        this(null, null, null, null, 0, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public vehicleRental(String renter, String plateNumber, String vehicleType, int rentalPrice) {
-        this(renter, plateNumber, vehicleType, rentalPrice, Instant.now());
+    public vehicleRental(String renter, String vehicleSupplier, String plateNumber, String vehicleType, int rentalPrice) {
+        this(renter, vehicleSupplier, plateNumber, vehicleType, rentalPrice, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public vehicleRental(String renter, String plateNumber, String vehicleType, int rentalPrice, Instant dateTime) {
+    public vehicleRental(String renter, String vehicleSupplier, String plateNumber, String vehicleType, int rentalPrice, LocalDateTime reservationStartDateTime, LocalDateTime reservationEndDateTime) {
         this.renter = renter;
+        this.vehicleSupplier = vehicleSupplier;
         this.plateNumber = plateNumber;
         this.vehicleType = vehicleType;
         this.rentalPrice = rentalPrice;
-        this.dateTime = dateTime;
+        this.reservationStartDateTime = reservationStartDateTime;
+        this.reservationEndDateTime = reservationEndDateTime;
     }
-    
-    public String getPlateNumber() {
-        return plateNumber;
-    }
-    public String getVehicleType() {
-        return vehicleType;
-    }
-    public void setVehicleType() {
-        this.vehicleType = vehicleType;
+    public UUID getId() {
+        return id;
     }
     public String getRenter() {
         return renter;
@@ -54,16 +53,40 @@ public class vehicleRental {
     public void setRenter(String renter) {
         this.renter = renter;
     }
+    public String getVehicleSupplier() {
+        return vehicleSupplier;
+    }
+    public void setVehicleSupplier(String vehicleSupplier) {
+        this.vehicleSupplier = vehicleSupplier;
+    }
+    public String getPlateNumber() {
+        return plateNumber;
+    }
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+    public String getVehicleType() {
+        return vehicleType;
+    }
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
     public int getRentalPrice() {
         return rentalPrice;
     }
     public void setRentalPrice(int rentalPrice) {
         this.rentalPrice = rentalPrice;
     }
-    public Instant getDateTime() {
-        return dateTime;
+    public LocalDateTime getReservationStartDateTime() {
+        return reservationStartDateTime;
     }
-    public void setDateTime(Instant dateTime) {
-        this.dateTime = dateTime;
+    public void setReservationStartDateTime(LocalDateTime reservationStartDateTime) {
+        this.reservationStartDateTime = reservationStartDateTime;
+    }
+    public LocalDateTime getReservationEndDateTime() {
+        return reservationEndDateTime;
+    }
+    public void setReservationEndDateTime(LocalDateTime reservationEndDateTime) {
+        this.reservationEndDateTime = reservationEndDateTime;
     }
  } 
