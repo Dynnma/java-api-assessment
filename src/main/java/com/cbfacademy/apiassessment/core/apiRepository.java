@@ -2,6 +2,7 @@ package com.cbfacademy.apiassessment.core;
 
 import java.io.Serializable;
 import java.util.List;
+import jakarta.persistence.PersistenceException;
 
 public interface apiRepository<T, ID extends Serializable> {
 

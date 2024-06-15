@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/vehicleRentals")
 public class VehicleRentalController {
     private VehicleRentalService vehiclerentalService;
 
@@ -29,10 +31,10 @@ public class VehicleRentalController {
         return vehiclerentalService.getAllVehicleRentals();
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<VehicleRental> getVehicleRentals(@PathVariable UUID id) {
+    @GetMapping("/{reservationId}")
+    public ResponseEntity<VehicleRental> getVehicleRentals(@PathVariable UUID reservationId) {
         try {
-            VehicleRental getvehiclerental = vehiclerentalService.getVehicleRental(id);
+            VehicleRental getvehiclerental = vehiclerentalService.getVehicleRental(reservationId);
             return ResponseEntity.ok(getvehiclerental);
         } catch (NoSuchElementException exception) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -44,21 +46,21 @@ public class VehicleRentalController {
         return vehiclerentalService.createVehicleRental(vehiclerental);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<VehicleRental> updateVehicleRental(@PathVariable UUID id, @RequestBody VehicleRental updatedVehicleRental) {
+    @PutMapping("/{reservationId}")
+    public ResponseEntity<VehicleRental> updateVehicleRental(@PathVariable UUID reservationId, @RequestBody VehicleRental updatedVehicleRental) {
         try {
-            VehicleRental updatedVehiclerental = vehiclerentalService.updateVehicleRental(id, updatedVehicleRental);
+            VehicleRental updatedVehiclerental = vehiclerentalService.updateVehicleRental(reservationId, updatedVehicleRental);
             return ResponseEntity.ok(updatedVehiclerental);
         } catch (NoSuchElementException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteVehicleRental(@PathVariable UUID id){
+    @DeleteMapping("/{reservationId}")
+    public ResponseEntity<Void> deleteVehicleRental(@PathVariable UUID reservationId){
         try {
-            vehiclerentalService.getVehicleRental(id);
-            vehiclerentalService.deleteVehicleRental(id);
+            vehiclerentalService.getVehicleRental(reservationId);
+            vehiclerentalService.deleteVehicleRental(reservationId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (IllegalArgumentException | NoSuchElementException exception) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -16,14 +16,14 @@ public class VehicleRentalService {
     public List<VehicleRental> getAllVehicleRentals() {
         return vehiclerentalRepository.findAll();
     }
-    public VehicleRental getVehicleRental(UUID id) {
-        return vehiclerentalRepository.findById(id).orElseThrow();
+    public VehicleRental getVehicleRental(UUID reservationId) {
+        return vehiclerentalRepository.findById(reservationId).orElseThrow();
     }
     public VehicleRental createVehicleRental(VehicleRental vehiclerental) throws IllegalArgumentException, OptimisticLockingFailureException {
         return vehiclerentalRepository.save(vehiclerental);
     } 
-    public VehicleRental updateVehicleRental(UUID id, VehicleRental updatedVehicleRental) throws NoSuchElementException {
-        VehicleRental vehiclerental = vehiclerentalRepository.findById(id).orElseThrow();
+    public VehicleRental updateVehicleRental(UUID reservationId, VehicleRental updatedVehicleRental) throws NoSuchElementException {
+        VehicleRental vehiclerental = vehiclerentalRepository.findById(reservationId).orElseThrow();
         vehiclerental.setRenter(updatedVehicleRental.getRenter());
         vehiclerental.setPlateNumber(updatedVehicleRental.getPlateNumber());
         vehiclerental.setVehicleType(updatedVehicleRental.getVehicleType());
@@ -32,8 +32,8 @@ public class VehicleRentalService {
         vehiclerental.setReservationEndDateTime(updatedVehicleRental.getReservationEndDateTime());
         return vehiclerentalRepository.save(vehiclerental);
     }
-    public void deleteVehicleRental(UUID id) {
-        vehiclerentalRepository.findById(id).orElseThrow();
-        vehiclerentalRepository.deleteById(id);
+    public void deleteVehicleRental(UUID reservationId) {
+        vehiclerentalRepository.findById(reservationId).orElseThrow();
+        vehiclerentalRepository.deleteById(reservationId);
     }
 }
