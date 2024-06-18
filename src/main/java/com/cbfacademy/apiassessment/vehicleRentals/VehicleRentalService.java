@@ -1,5 +1,7 @@
 package com.cbfacademy.apiassessment.vehicleRentals;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -13,16 +15,22 @@ public class VehicleRentalService {
     public VehicleRentalService(VehicleRentalRepository vehiclerentalRepository) {
         this.vehiclerentalRepository = vehiclerentalRepository;
     }
+
     public List<VehicleRental> getAllVehicleRentals() {
         return vehiclerentalRepository.findAll();
     }
+
     public VehicleRental getVehicleRental(UUID reservationId) {
         return vehiclerentalRepository.findById(reservationId).orElseThrow();
     }
-    public VehicleRental createVehicleRental(VehicleRental vehiclerental) throws IllegalArgumentException, OptimisticLockingFailureException {
+
+    public VehicleRental createVehicleRental(VehicleRental vehiclerental)
+            throws IllegalArgumentException, OptimisticLockingFailureException {
         return vehiclerentalRepository.save(vehiclerental);
-    } 
-    public VehicleRental updateVehicleRental(UUID reservationId, VehicleRental updatedVehicleRental) throws NoSuchElementException {
+    }
+
+    public VehicleRental updateVehicleRental(UUID reservationId, VehicleRental updatedVehicleRental)
+            throws NoSuchElementException {
         VehicleRental vehiclerental = vehiclerentalRepository.findById(reservationId).orElseThrow();
         vehiclerental.setRenter(updatedVehicleRental.getRenter());
         vehiclerental.setPlateNumber(updatedVehicleRental.getPlateNumber());
@@ -32,8 +40,27 @@ public class VehicleRentalService {
         vehiclerental.setReservationEndDateTime(updatedVehicleRental.getReservationEndDateTime());
         return vehiclerentalRepository.save(vehiclerental);
     }
+
     public void deleteVehicleRental(UUID reservationId) {
         vehiclerentalRepository.findById(reservationId).orElseThrow();
         vehiclerentalRepository.deleteById(reservationId);
+    }
+
+    public List<VehicleRental> filterByVehicleType(String vehicleType) {
+
+        List<VehicleRental> rentals = vehiclerentalRepository.filterByVehicleType(vehicleType);
+        VehicleRental[] rentalsArray = rentals.toArray(new VehicleRental[rentals.size()]);
+
+        for (int i = 0; i < rentalsArray.length; i++) {
+            for (int v = 0; v < i; v++) {
+
+                if (rentalsArray[i].getRentalPrice() < rentalsArray[v].getRentalPrice()) {
+                    VehicleRental rental = rentalsArray[i];
+                    rentalsArray[i] = rentalsArray[v];
+                    rentalsArray[v] = rental;
+                }
+            }
+        }
+        return Arrays.asList(rentalsArray);
     }
 }

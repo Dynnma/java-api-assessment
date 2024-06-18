@@ -4,14 +4,15 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface VehicleRentalRepository extends ListCrudRepository<VehicleRental, UUID> {
 
-    List<VehicleRental> searchByrenter(String renter); 
+    List<VehicleRental> filterByRenter(String renter); 
 
-    List<VehicleRental> searchByplateNumber(String plateNumber); 
+    List<VehicleRental> filterByVehicleType(String vehicleType); 
 
-    List<VehicleRental> sortByvehicleType(String vehicleType); 
 
 
 }
