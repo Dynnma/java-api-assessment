@@ -6,7 +6,9 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,8 +44,13 @@ public class VehicleRentalController {
     }
 
     @PostMapping()
-    public VehicleRental createVehiclerental(@RequestBody VehicleRental vehiclerental) {
-        return vehiclerentalService.createVehicleRental(vehiclerental);
+    public ResponseEntity<VehicleRental> createVehiclerental(@RequestBody VehicleRental vehiclerental) {
+        if (vehiclerental.getReservationStartDateTime().isAfter(vehiclerental.getReservationEndDateTime())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } 
+        else {
+            return ResponseEntity.status(HttpStatus.CREATED).body(vehiclerentalService.createVehicleRental(vehiclerental));
+        }
     }
 
     @PutMapping("/{reservationId}")
@@ -57,7 +64,7 @@ public class VehicleRentalController {
     }
 
     @DeleteMapping("/{reservationId}")
-    public ResponseEntity<Void> deleteVehicleRental(@PathVariable UUID reservationId){
+    public ResponseEntity<Void> deleteVehicleRental(@PathVariable UUID reservationId) {
         try {
             vehiclerentalService.getVehicleRental(reservationId);
             vehiclerentalService.deleteVehicleRental(reservationId);

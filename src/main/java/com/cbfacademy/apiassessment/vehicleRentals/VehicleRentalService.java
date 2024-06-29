@@ -1,6 +1,5 @@
 package com.cbfacademy.apiassessment.vehicleRentals;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -36,6 +35,8 @@ public class VehicleRentalService {
         vehiclerental.setPlateNumber(updatedVehicleRental.getPlateNumber());
         vehiclerental.setVehicleType(updatedVehicleRental.getVehicleType());
         vehiclerental.setRentalPrice(updatedVehicleRental.getRentalPrice());
+        vehiclerental.setVehicleStatus(updatedVehicleRental.getVehicleStatus());
+        vehiclerental.setDriverRequested(updatedVehicleRental.isDriverRequested());
         vehiclerental.setReservationStartDateTime(updatedVehicleRental.getReservationStartDateTime());
         vehiclerental.setReservationEndDateTime(updatedVehicleRental.getReservationEndDateTime());
         return vehiclerentalRepository.save(vehiclerental);
@@ -48,7 +49,7 @@ public class VehicleRentalService {
 
     public List<VehicleRental> filterByVehicleType(String vehicleType) {
 
-        List<VehicleRental> rentals = vehiclerentalRepository.filterByVehicleType(vehicleType);
+        List<VehicleRental> rentals = vehiclerentalRepository.findByVehicleType(vehicleType);
         VehicleRental[] rentalsArray = rentals.toArray(new VehicleRental[rentals.size()]);
 
         for (int i = 0; i < rentalsArray.length; i++) {

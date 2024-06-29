@@ -17,13 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.cbfacademy.apiassessment.App;
 import com.cbfacademy.apiassessment.vehicleRentals.VehicleRental;
 import com.cbfacademy.apiassessment.vehicleRentals.VehicleRentalService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.lang.Double;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -56,11 +54,11 @@ class AppTests {
 
 	private List<VehicleRental> defaultVehicleRentals = new ArrayList<>() {
 		{
-			add(new VehicleRental("John", "WA23 BRT", "Van", Double.valueOf("305.87"), getLocalDateTime(24),
+			add(new VehicleRental("John", "WA23 BRT", "Van", 305.87, "Available", true, getLocalDateTime(0),
 					getLocalDateTime(24)));
-			add(new VehicleRental("Mary", "BS21 CGA", "Car", Double.valueOf("135.45"), getLocalDateTime(48),
+			add(new VehicleRental("Mary", "BS21 CGA", "Car", 135.45, "Unavailable", false, getLocalDateTime(0),
 					getLocalDateTime(48)));
-			add(new VehicleRental("Linda", "GL32 MLS", "SUV", Double.valueOf("232.00"), getLocalDateTime(72),
+			add(new VehicleRental("Linda", "GL32 MLS", "SUV", 232.00, "Reserved", false, getLocalDateTime(0),
 					getLocalDateTime(72)));
 		}
 	};
@@ -224,7 +222,7 @@ class AppTests {
 	}
 
 	private VehicleRental createNewVehicleRental() {
-		return setReservationId(new VehicleRental("John", "WA23 BRT", "Van", Double.valueOf("305.87"),
+		return setReservationId(new VehicleRental("John", "WA23 BRT", "Van", 305.87, "Available", true,
 				getLocalDateTime(24), getLocalDateTime(24)));
 	}
 

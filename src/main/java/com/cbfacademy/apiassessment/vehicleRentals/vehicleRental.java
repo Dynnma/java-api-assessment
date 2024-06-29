@@ -22,23 +22,27 @@ public class VehicleRental {
     private String plateNumber;
     private String vehicleType;
     private double rentalPrice;
+    private String vehicleStatus;
+    private boolean driverRequested;
     private LocalDateTime reservationStartDateTime;
     private LocalDateTime reservationEndDateTime;
 
 
     public VehicleRental() {
-        this(null, null, null, 0.0, LocalDateTime.now(), LocalDateTime.now());
+        this(null, null, null, 0.0, null, true, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public VehicleRental(String renter, String plateNumber, String vehicleType, double rentalPrice) {
-        this(renter, plateNumber, vehicleType, rentalPrice, LocalDateTime.now(), LocalDateTime.now());
+    public VehicleRental(String renter, String plateNumber, String vehicleType, double rentalPrice, String vehicleStatus, boolean driverRequested) {
+        this(renter, plateNumber, vehicleType, rentalPrice, vehicleStatus, driverRequested, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public VehicleRental(String renter, String plateNumber, String vehicleType, double rentalPrice2, LocalDateTime reservationStartDateTime, LocalDateTime reservationEndDateTime) {
+    public VehicleRental(String renter, String plateNumber, String vehicleType, double rentalPrice, String vehicleStatus, boolean driverRequested, LocalDateTime reservationStartDateTime, LocalDateTime reservationEndDateTime) {
         this.renter = renter;
         this.plateNumber = plateNumber;
         this.vehicleType = vehicleType;
-        this.rentalPrice = rentalPrice2;
+        this.rentalPrice = rentalPrice;
+        this.vehicleStatus = vehicleStatus;
+        this.driverRequested = driverRequested;
         this.reservationStartDateTime = reservationStartDateTime;
         this.reservationEndDateTime = reservationEndDateTime;
     }
@@ -68,6 +72,18 @@ public class VehicleRental {
     }
     public void setRentalPrice(double rentalPrice) {
         this.rentalPrice = rentalPrice;
+    }
+    public String getVehicleStatus() {
+        return vehicleStatus;
+    }
+    public void setVehicleStatus(String vehicleStatus) {
+        this.vehicleStatus = vehicleStatus;
+    }
+    public boolean isDriverRequested() {
+        return driverRequested;
+    }
+    public void setDriverRequested(boolean driverRequested) {
+        this.driverRequested = driverRequested;
     }
     public LocalDateTime getReservationStartDateTime() {
         return reservationStartDateTime;

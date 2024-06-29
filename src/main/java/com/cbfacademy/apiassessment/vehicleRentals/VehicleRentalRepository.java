@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VehicleRentalRepository extends ListCrudRepository<VehicleRental, UUID> {
 
-    List<VehicleRental> filterByRenter(String renter); 
+    List<VehicleRental> findByRenter(String renter); 
 
-    List<VehicleRental> filterByVehicleType(String vehicleType); 
+    List<VehicleRental> findByVehicleType(String vehicleType); 
 
 
 
