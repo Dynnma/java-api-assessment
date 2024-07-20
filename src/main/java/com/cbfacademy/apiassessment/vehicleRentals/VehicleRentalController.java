@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -47,16 +48,18 @@ public class VehicleRentalController {
     public ResponseEntity<VehicleRental> createVehiclerental(@RequestBody VehicleRental vehiclerental) {
         if (vehiclerental.getReservationStartDateTime().isAfter(vehiclerental.getReservationEndDateTime())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        } 
-        else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(vehiclerentalService.createVehicleRental(vehiclerental));
+        } else {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(vehiclerentalService.createVehicleRental(vehiclerental));
         }
     }
 
     @PutMapping("/{reservationId}")
-    public ResponseEntity<VehicleRental> updateVehicleRental(@PathVariable UUID reservationId, @RequestBody VehicleRental updatedVehicleRental) {
+    public ResponseEntity<VehicleRental> updateVehicleRental(@PathVariable UUID reservationId,
+            @RequestBody VehicleRental updatedVehicleRental) {
         try {
-            VehicleRental updatedVehiclerental = vehiclerentalService.updateVehicleRental(reservationId, updatedVehicleRental);
+            VehicleRental updatedVehiclerental = vehiclerentalService.updateVehicleRental(reservationId,
+                    updatedVehicleRental);
             return ResponseEntity.ok(updatedVehiclerental);
         } catch (NoSuchElementException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -72,5 +75,10 @@ public class VehicleRentalController {
         } catch (IllegalArgumentException | NoSuchElementException exception) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/filterByVehicleType")
+    public List<VehicleRental> filterByVehicleType(@RequestParam String vehicleType) {
+        return vehiclerentalService.filterByVehicleType(vehicleType);
     }
 }

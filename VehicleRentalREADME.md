@@ -230,7 +230,7 @@ Error handling: Returns a 404 (Not Found error) if the reservation Id is invalid
 
 Description > Deletes a VehicleRental by reservationId. 
 
-Full Endpoint > http://localhost:8080/api/vehicleRentals/91b027ea-766b-4386-8981-03736695c600
+Full Endpoint > http://localhost:8080/api/vehicleRentals/8ecf75b8-47b6-44c8-8226-d86c64e3520d
     
 Response: Returns a 204 (No Content response) if the vehical rental was successfully deleted.
 
@@ -238,3 +238,36 @@ Exception handling: Throws an IllegalArgumentException and NoSuchElementExceptio
 
 Error handling: Returns a 404 (Not Found error) if the reservation Id is invalid or doesn"t exist.
 
+
+## GET Method (Testing filterby vehicleType and Orderby rentalPrice algorithm on Postman
+
+Description > GET request used to retrieve vehicles of a certain type and order their rental prices in ascending order.
+
+Full Endpoint > http://localhost:8080/api/vehicleRentals/filterByVehicleType?vehicleType=Car
+
+Response: Returns a 200 (OK response) if successful
+
+Response Body:
+
+    {
+        "reservationId": "5a3ca809-036f-4516-8942-b3e0258c96ea",
+        "renter": "May June",
+        "plateNumber": "RT98 MCK",
+        "vehicleType": "Car",
+        "rentalPrice": 200.99,
+        "vehicleStatus": "Available",
+        "driverRequested": true,
+        "reservationStartDateTime": "2024-03-21T12:00:00",
+        "reservationEndDateTime": "2024-03-28T12:00:00"
+    },
+    {
+        "reservationId": "c60cc04c-41d2-4829-9a66-d6fdf5426fb5",
+        "renter": "Chap Fenty",
+        "plateNumber": "FT23 TDD",
+        "vehicleType": "Car",
+        "rentalPrice": 450.99,
+        "vehicleStatus": "Reserved",
+        "driverRequested": false,
+        "reservationStartDateTime": "2024-07-01T12:00:00",
+        "reservationEndDateTime": "2024-07-22T12:00:00"
+    }
