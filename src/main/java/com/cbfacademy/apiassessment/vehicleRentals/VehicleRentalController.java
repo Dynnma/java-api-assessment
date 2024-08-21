@@ -1,4 +1,4 @@
-package com.cbfacademy.apiassessment.vehicleRentals;
+package com.cbfacademy.apiassessment.vehiclerentals;
 
 import java.util.List;
 import java.util.NoSuchElementException;

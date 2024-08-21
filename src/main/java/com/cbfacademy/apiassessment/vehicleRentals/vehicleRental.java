@@ -1,8 +1,7 @@
-package com.cbfacademy.apiassessment.vehicleRentals;
+package com.cbfacademy.apiassessment.vehiclerentals;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

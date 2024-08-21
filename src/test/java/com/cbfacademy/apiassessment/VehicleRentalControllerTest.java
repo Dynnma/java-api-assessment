@@ -17,8 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.cbfacademy.apiassessment.vehicleRentals.VehicleRental;
-import com.cbfacademy.apiassessment.vehicleRentals.VehicleRentalService;
+import com.cbfacademy.apiassessment.vehiclerentals.VehicleRental;
+import com.cbfacademy.apiassessment.vehiclerentals.VehicleRentalService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
