@@ -73,11 +73,22 @@ To test the API endpoints, connect to the API using Postman on port 8080. The AP
 
 
 ## POST Method 
-Description > Use this to create or add new VehicleRentals
+Description > This endpoint is used to create new vehicle rental records in the system. The request should include details about the renter, vehicle, and reservation period. Multiple rentals can be added in a single request.
 
-Full Endpoint > http://localhost:8080/api/vehicleRentals
+Full Endpoint > http://localhost:8080/api/vehiclerentals
    
-Request Body:
+Request Body: The request body must be a JSON array of rental objects. Each rental object should include the following fields:
+
+`renter` (string, required): The name of the person renting the vehicle.
+`plateNumber` (string, required): The license plate number of the vehicle.
+`vehicleType` (string, required): The type of vehicle (e.g. Car, Van, Suv).
+`rentalPrice` (number, required): The price of the rental.
+`vehicleStatus` (string, required): The status of the vehicle (Available, Unavailable).
+`driverRequested` (boolean, required): Whether the renter has requested a driver.
+`reservationStartDateTime` (string, required): The start date and time of the reservation in ISO 8601 format (YYYY-MM-DDTHH:MM:SS).
+`reservationEndDateTime` (string, required): The end date and time of the reservation in ISO 8601 format (YYYY-MM-DDTHH:MM:SS).
+
+Sample Body
 
     {
         "renter": "John Doe",
@@ -100,7 +111,9 @@ Request Body:
         "reservationEndDateTime": "2024-04-21T12:00:00"
     }
 
-Response: Returns a 201 (Created response) if the vehicleRental was created successfully.
+Error handling: Returns a `400 Bad Request` error if the request is invalid. One common reason is if the reservationStartDateTime is later than the reservationEndDateTime.
+
+Expected Response: Returns the status code `201 Created` if the vehicle rental(s) were created successfully. The response body will include the full details of the newly created rental(s), including a unique reservationId for each as illustrated below.
 
 Response Body: 
 
@@ -127,17 +140,15 @@ Response Body:
         "reservationEndDateTime": "2024-04-21T12:00:00"
     }
 
-Error handling: Returns a 400 (Bad Request error) if the reservation start date is greater than the end date.
-
 ## GET Method 
 
-Description > A GET call is used to retrieve all the vehicleRental data.
+Description > This endpoint is used to retrieve all the vehicle rental data stored in the system. It provides details about each rental, including the renter's information, vehicle type, vehicle status, rental price, and reservation details.
 
-Full Endpoint > http://localhost:8080/api/vehicleRentals
+Full Endpoint > http://localhost:8080/api/vehiclerentals
 
-Response: Returns a 200 (OK response) if successful
+Expected Response: Returns the status code `200 OK` with a response body if the request is successful.
 
-Response Body:
+Response Body: The expected response body is a JSON array containing the details of all the vehicle rentals as illustrated below.
 
     {
         "reservationId": "8ecf75b8-47b6-44c8-8226-d86c64e3520d"
@@ -163,11 +174,15 @@ Response Body:
     }    
 
 ## PUT Method 
-Description > Use this to update or replace data in a VehicleRental 
+Description > This endpoint is used to update or replace the details of an existing vehicle rental. You need to provide the reservationId in the URL path to specify which rental record to update. Ensure to replace the placeholder `{reservationId}` with the actual ID of the vehicle rental you wish to update.
 
-Full Endpoint > http://localhost:8080/api/vehicleRentals/8ecf75b8-47b6-44c8-8226-d86c64e3520d
-    
-Request Body:
+Full Endpoint > http://localhost:8080/api/vehiclerentals/{reservationId}
+
+Exception Handling: Throws a NoSuchElementException if the provided reservationId does not exist in the system. This is an internal exception and should be translated to an appropriate HTTP error response.
+
+Error Handling: Returns the status code `404 Not Found` if the provided reservationId is invalid or does not exist.
+
+Expected Response: Returns the status code `200 OK` if the vehicle rental was successfully updated. The response body will include the updated details of the vehicle rental. The sample body below represents an update on the vehicle rental with reservationId "8ecf75b8-47b6-44c8-8226-d86c64e3520d":
 
     {
         "renter": "John Doe",
@@ -180,9 +195,7 @@ Request Body:
         "reservationEndDateTime": "2024-06-18T12:00:00"
     }    
 
-Response: Returns a 200 (OK response) if the vehicleRental was successfully updated. 
-
-Response Body:
+Expected response body after update:
 
     {
         "reservationId": "8ecf75b8-47b6-44c8-8226-d86c64e3520d",
@@ -195,20 +208,20 @@ Response Body:
         "reservationStartDateTime": "2024-06-16T12:00:00",
         "reservationEndDateTime": "2024-06-18T12:00:00"
     }
-
-Exception handling: Throws a NoSuchElementException if the reservationId doesn't exist.
-
-Error handling: Returns a 404 (Not Found error) if the reservation Id is invalid or does not exist.    
     	
 ## GET by Id Method
 
-Description > Get a VehicleRental by reservationId
+Description > This endpoint retrieves the details of a specific vehicle rental based on its unique reservationId. It is useful for fetching the details of a particular rental record. Replace the placeholder `{reservationId}` with the actual ID of the vehicle rental you want to retrieve.
 
-Full Endpoint > http://localhost:8080/api/vehicleRentals/8ecf75b8-47b6-44c8-8226-d86c64e3520d
+Full Endpoint > http://localhost:8080/api/vehiclerentals/{reservationId}
 
-Response: Returns a 200 (OK response) if successful.
+Exception Handling: Throws a NoSuchElementException if the provided reservationId does not exist in the system. This is an internal exception and should be translated to an appropriate HTTP error response.
 
-Response Body: 
+Error Handling: Returns the status code `404 Not Found` if the provided reservationId is invalid or does not exist.
+
+Expected Response: Returns the status code `200 OK` if the request was successful, and the response body contains the details of the vehicle rental associated with the provided reservationId.
+
+Sample Response Body using the endpoint http://localhost:8080/api/vehiclerentals/8ecf75b8-47b6-44c8-8226-d86c64e3520d
 
     {
         "reservationId": "8ecf75b8-47b6-44c8-8226-d86c64e3520d",
@@ -222,32 +235,32 @@ Response Body:
         "reservationEndDateTime": "2024-06-18T12:00:00"
     }     
 
-Exception handling: Throws a NoSuchElementException if the reservation doesn't exist
-
-Error handling: Returns a 404 (Not Found error) if the reservation Id is invalid or doesn"t exist.
-
 ## DELETE Method 
 
-Description > Deletes a VehicleRental by reservationId. 
+Description > This endpoint is used to delete a specific vehicle rental record identified by its unique reservationId. Once deleted, the vehicle rental record will no longer be available in the system. Replace the placeholder `{reservationId}` with the actual ID of the vehicle rental you want to delete.
 
-Full Endpoint > http://localhost:8080/api/vehicleRentals/8ecf75b8-47b6-44c8-8226-d86c64e3520d
+Full Endpoint > http://localhost:8080/api/vehiclerentals/{reservationId}
+
+Exception Handling: Throws an `IllegalArgumentException` if the reservationId provided is invalid, such as being incorrectly formatted and throws a `NoSuchElementException` if the reservationId does not exist in the system. This is typically used to handle cases where the ID is valid in format but does not correspond to any existing rental record.
+
+Error Handling: Returns the status code `404 Not Found` if the provided reservationId is invalid or does not exist in the system. 
     
-Response: Returns a 204 (No Content response) if the vehical rental was successfully deleted.
+Expected Response: Returns the status code `204 No Content` if the vehicle rental was successfully deleted. This response indicates that the operation was successful, but no content is returned in the response body.
 
-Exception handling: Throws an IllegalArgumentException and NoSuchElementException if the reservation invalid or doesn't exist
+## GET Method (Testing filter by vehicleType and Order by rentalPrice algorithm on Postman)
 
-Error handling: Returns a 404 (Not Found error) if the reservation Id is invalid or doesn"t exist.
+Description > This endpoint allows you to retrieve a list of vehicle rentals filtered by a specific vehicleType, such as "Car", and orders the results by rentalPrice in ascending order. This is useful for finding the most affordable options within a specific vehicle category. Replace the placeholder `{vehicleType}` with the desired vehicle type (e.g., Car, Van, SUV).
 
+Full Endpoint > http://localhost:8080/api/vehiclerentals/filterByVehicleType?vehicleType={vehicleType}
 
-## GET Method (Testing filterby vehicleType and Orderby rentalPrice algorithm on Postman
+Response: Returns the status code `200 OK` if the request was successful. The response body contains a JSON array of vehicle rental records that match the filter criteria. The records are sorted by rentalPrice in ascending order.
 
-Description > GET request used to retrieve vehicles of a certain type and order their rental prices in ascending order.
+## Sample Testing Process in Postman 
+> Select the GET method in Postman,
+> Enter the Full Endpoint http://localhost:8080/api/vehiclerentals/filterByVehicleType?vehicleType=Car.
+> Send the request and verify that the results are filtered by the specified vehicleType `Car`and sorted by rentalPrice in ascending order.
 
-Full Endpoint > http://localhost:8080/api/vehicleRentals/filterByVehicleType?vehicleType=Car
-
-Response: Returns a 200 (OK response) if successful
-
-Response Body:
+Response Body
 
     {
         "reservationId": "5a3ca809-036f-4516-8942-b3e0258c96ea",
@@ -271,3 +284,5 @@ Response Body:
         "reservationStartDateTime": "2024-07-01T12:00:00",
         "reservationEndDateTime": "2024-07-22T12:00:00"
     }
+
+
